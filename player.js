@@ -14,6 +14,7 @@ window.addEventListener('load', function() {
   var soundButton = document.getElementById('sound-button');
   var sbarContainer = document.getElementById('sbar-container');
   var sbar = document.getElementById('sbar');
+  var fullscreenButton = document.getElementById('fullscreen-button');
 
   video.load();
 
@@ -29,6 +30,8 @@ window.addEventListener('load', function() {
     soundButton.addEventListener('click', muteOrUnmute, false);
 
     sbarContainer.addEventListener('click', changeVolume, false);
+
+    fullscreenButton.addEventListener('click', fullscreen, false);
 
   }, false);
 
@@ -118,6 +121,19 @@ window.addEventListener('load', function() {
     video.muted = false;
     soundButton.src = 'images/sound.png';
     sbar.style.display = 'block';
+  }
+
+  // Fullscreen
+  function fullscreen() {
+    if (video.requestFullscreen) {
+      video.requestFullscreen();
+    } else if (video.webkitRequestFullscreen) {
+      video.webkitRequestFullscreen();
+    } else if (video.mozRequestFullscreen) {
+      video.mozRequestFullscreen();
+    } else if (video.msRequestFullscreen) {
+      video.msRequestFullscreen();
+    }
   }
 
 }, false);
