@@ -11,6 +11,9 @@ window.addEventListener('load', function() {
   // Buttons container
   var playButton = document.getElementById('play-button');
   var timeField = document.getElementById('time-field');
+  var soundButton = document.getElementById('sound-button');
+  var sbarContainer = document.getElementById('sbar-container');
+  var sbar = document.getElementById('sbar');
 
   video.load();
 
@@ -19,6 +22,13 @@ window.addEventListener('load', function() {
     playButton.addEventListener('click', playOrPause, false);
 
     pbarContainer.addEventListener('click', skip, false);
+
+    // For get the total time of the video when he load
+    updatePlayer();
+
+    soundButton.addEventListener('click', muteOrUnmute, false);
+
+    sbarContainer.addEventListener('click', changeVolume, false);
 
   }, false);
 
@@ -62,13 +72,52 @@ window.addEventListener('load', function() {
 
     // For make sure he don't pass 60secs
     if (minutes > 0) seconds -= minutes*60;
-    
+
     // Add a zero if this is need
     if (seconds.toString().length === 1) seconds = '0' + seconds;
     
+    // Get the total at the right of the currentTime
+    var totalSeconds = Math.round(video.duration);
     
+    var totalMinutes = Math.floor(totalSeconds/60);
 
-    return minutes + ':' + seconds; // For looking like a real clock
+    if (totalMinutes > 0) totalSeconds -= totalMinutes * 60;
+
+    if (totalSeconds.toString().length === 1) totalSeconds = '0' + totalSeconds;
+
+
+    return minutes + ':' + seconds + ' / ' + totalMinutes + ':' + totalSeconds; // For looking like a real clock
+  }
+
+  // SOUND
+  function muteOrUnmute() {
+    if (!video.muted) {
+      video.muted = true;
+      soundButton.src = 'images/mute.png';
+
+      // When we muted the video we want the bar to be empty
+      sbar.style.display = 'none';
+    } else {
+      video.muted = false;
+      soundButton.src = 'images/sound.png';
+
+      sbar.style.display = 'block';
+    }
+  }
+
+  function changeVolume(e) {
+    var mouseX = e.pageX - sbarContainer.offsetLeft;
+    var width = window.getComputedStyle(sbarContainer).getPropertyValue('width');
+    // width is a string we need to change it for a number
+    width = parseFloat(width.substr(0, width.length - 2));
+
+    video.volume = (mouseX/width);
+    sbar.style.width = (mouseX/width) * 100 + '%';
+
+    // If muted and we click somewhere else we can unmuted
+    video.muted = false;
+    soundButton.src = 'images/sound.png';
+    sbar.style.display = 'block';
   }
 
 }, false);

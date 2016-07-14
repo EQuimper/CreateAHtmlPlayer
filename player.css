@@ -4,6 +4,14 @@
   lightblue: rgb(50, 170, 220);
  */
 
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+}
+
 #player {
   background-color: rgb(30, 30, 30);
   display: inline-block;
@@ -12,6 +20,7 @@
   -ms-user-select: none;
   -o-user-select: none;
   user-select: none;
+  box-shadow: 2px 2px 2px rgb(70, 70, 70);
 }
 
 img {
@@ -19,7 +28,7 @@ img {
 }
 
 img:hover {
-  background-color: rgb(50, 170, 220);
+  background-color: #fff;
 }
 
 img, #pbar-container, #sbar-container {
@@ -47,7 +56,7 @@ img, #pbar-container, #sbar-container {
   #pbar {
     height: 5px;
     width: 0%;
-    background-color: rgb(50, 170, 220)
+    background-color: red;
   }
 
 #buttons-container {
@@ -63,7 +72,7 @@ img, #pbar-container, #sbar-container {
 
   #time-field {
     cursor: default;
-    color: rgb(50, 170, 220);
+    color: #fff;
     line-height: 50px;
   }
 
@@ -80,8 +89,8 @@ img, #pbar-container, #sbar-container {
     
     #sbar {
       height: 100%;
-      width: 50%;
-      background-color: rgb(50, 170, 220);
+      width: 100%;
+      background-color: red;
     }
 
   #fullscreen-button {
