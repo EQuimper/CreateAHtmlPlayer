@@ -2,6 +2,8 @@ window.addEventListener('load', function() {
 
   // Video container
   var video = document.getElementById('video');
+  var pauseScreen = document.getElementById('screen');
+  var screenButton = document.getElementById('screen-button');
 
   // Progress bar container
   var pbarContainer = document.getElementById('pbar-container');
@@ -33,6 +35,8 @@ window.addEventListener('load', function() {
 
     fullscreenButton.addEventListener('click', fullscreen, false);
 
+    screenButton.addEventListener('click', playOrPause, false);
+
   }, false);
 
 
@@ -42,10 +46,16 @@ window.addEventListener('load', function() {
       video.play();
       playButton.src = 'images/pause.png';
       var update = setInterval(updatePlayer, 30);
+    
+      // For make sure the screen disapear when we play
+      pauseScreen.style.display = 'none';
     } else {
       video.pause();
       playButton.src = 'images/play.png';
       window.clearInterval(update);
+
+      pauseScreen.style.display = 'block';
+      screenButton.src = 'images/play.png';
     }
   }
 
@@ -54,9 +64,17 @@ window.addEventListener('load', function() {
     var update = setInterval(updatePlayer, 30);
     pbar.style.width = percentage + '%';
     timeField.innerHTML = getFormattedTime();
+    // When ended
     if (video.ended) {
       window.clearInterval(update);
       playButton.src = 'images/replay.png';
+      
+      pauseScreen.style.display = 'block';
+      screenButton.src = 'images/replay.png';
+
+    } else if (video.paused) {
+      playButton.src = 'images/play.png';
+      screenButton.src = 'images/play.png';
     }
   }
 
@@ -66,7 +84,7 @@ window.addEventListener('load', function() {
     // width is a string we need to change it for a number
     width = parseFloat(width.substr(0, width.length - 2));
     video.currentTime = (mouseX/width) * video.duration;
-    updatePlayer; // Cause when pause the bar don't update
+    updatePlayer(); // Cause when pause the bar don't update
   }
 
   function getFormattedTime() {
